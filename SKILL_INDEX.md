@@ -1,6 +1,6 @@
 # Skill index
 
-This catalog lists the 110 integrated skill packages. Each leaf directory contains exactly:
+This catalog lists the 130 integrated skill packages. Each leaf directory contains exactly:
 
 - `SKILL.md`
 - `EVAL.md`
@@ -8,6 +8,12 @@ This catalog lists the 110 integrated skill packages. Each leaf directory contai
 Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 
 ## Providers
+
+### 3D generation
+
+- `meshy-3d`
+- `tencent-hunyuan3d`
+- `tripo-3d`
 
 ### Audio enhancement
 
@@ -42,17 +48,26 @@ Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 - `stability-ai-image`
 - `xai-grok-imagine-image`
 
+### Lip sync
+
+- `sync-labs-lipsync`
+
 ### Music generation
 
 - `ace-step`
 - `elevenlabs-music`
 - `google-lyria`
 - `minimax-music`
+- `suno-music`
 
 ### Sound generation
 
 - `elevenlabs-sound-effects`
 - `stable-audio`
+
+### Source separation
+
+- `audioshake-stem-separation`
 
 ### Speech and voice
 
@@ -74,10 +89,16 @@ Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 - `amazon-polly`
 - `cartesia-sonic`
 - `elevenlabs-tts`
+- `fish-audio-tts`
 - `hume-octave`
+- `kokoro-tts`
 - `minimax-speech`
 - `qwen3-tts`
 - `resemble-chatterbox`
+
+### Video enhancement
+
+- `topaz-video-enhancement`
 
 ### Video generation
 
@@ -85,23 +106,37 @@ Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 - `amazon-nova-reel`
 - `google-gemini-omni-video`
 - `google-veo`
+- `higgsfield-video`
 - `kling-video`
 - `ltx-2-video`
 - `luma-ray-video`
 - `midjourney-video`
 - `minimax-hailuo-video`
+- `moonvalley-marey`
 - `nvidia-cosmos-video`
+- `pika-video`
 - `runway-video`
 - `seedance-2-0`
 - `tencent-hunyuanvideo`
+- `video-generation-gateways`
 - `vidu-video`
 - `xai-grok-imagine-video`
 
+### Video understanding
+
+- `twelvelabs-video-understanding`
+
 ### Voice agents
 
+- `elevenlabs-agents`
 - `gemini-live-audio`
 - `hume-evi`
 - `openai-realtime-voice`
+
+### World models
+
+- `odyssey-interactive-video`
+- `world-labs-marble`
 
 ## Production
 
@@ -117,6 +152,8 @@ Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 
 ### Content formats
 
+- `anime-animation-production`
+- `audiobook-production`
 - `avatar-spokesperson-production`
 - `brand-launch-film-production`
 - `cinematic-trailer-production`
@@ -128,6 +165,7 @@ Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 - `food-beverage-content-production`
 - `game-trailer-production`
 - `music-video-production`
+- `podcast-production`
 - `product-ad-production`
 - `real-estate-content-production`
 - `saas-product-demo-production`

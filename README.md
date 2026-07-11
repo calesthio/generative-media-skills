@@ -1,14 +1,16 @@
 # generative-media-skills
 
-Supercharge your AI Agents as media generation experts. Introducing **more than 100 research-backed Agent Skills** for premium generative media production across **more than 15 categories**: image generation, video generation, text-to-speech, speech-to-text, music, sound effects, avatar video, voice agents, cinematic direction, post-production, content formats, delivery QA, provenance, and runtime assembly.
+Supercharge your AI Agents as media generation experts. Introducing **130 research-backed Agent Skills** for premium generative media production across **22 categories**: image generation, video generation, video enhancement, video understanding, 3D generation, world models, lip sync, text-to-speech, speech-to-text, music, sound effects, source separation, avatar video, voice agents, cinematic direction, post-production, content formats, delivery QA, provenance, and runtime assembly.
 
 This is not a prompt-pack repo. It is a production-grade skill library for coding agents that need to make real media decisions: which provider to use, how to brief it, how to handle rights and provenance, how to QA the result, and how to ship usable creative assets.
 
 Use it with **Claude Code**, **Codex**, **GitHub Copilot**, **Cursor**, **OpenClaw/Hermes-style agents**, or any agent runtime that can load markdown skills. Plug it into an [OpenMontage](https://github.com/calesthio/OpenMontage) workflow and give your agent a serious media-production brain.
 
+> If this project looks useful to you, a ⭐ would really mean a lot — it helps others discover it too.
+
 ## What is inside
 
-- **Provider skills** for models and platforms like OpenAI image/audio, Google Veo/Gemini/Lyria, Runway, Luma, Kling, Seedance, Midjourney, ElevenLabs, Azure Speech, Amazon Nova/Polly/Transcribe, NVIDIA, Alibaba, xAI, and more.
+- **Provider skills** for models and platforms like OpenAI image/audio, Google Veo/Gemini/Lyria, Runway, Luma, Kling, Seedance, Midjourney, ElevenLabs, Azure Speech, Amazon Nova/Polly/Transcribe, NVIDIA, Alibaba, xAI, Meshy, Sync Labs, Topaz Labs, TwelveLabs, multi-model gateways (fal.ai, Replicate, WaveSpeed), and more.
 - **Production skills** for cinematic shot direction, lighting, storyboard/previs, color, VFX, captions, sound design, music supervision, localization, media QA, provenance, and final delivery.
 - **Format skills** for real deliverables: UGC ads, brand launch films, SaaS demos, music videos, game trailers, ecommerce product imagery, fashion campaigns, food/beverage content, real estate listings, avatar spokesperson videos, educational animation, and more.
 - **Runtime assembly skills** for Remotion, HyperFrames, FFmpeg, ComfyUI, and Manim.
@@ -28,18 +30,24 @@ At a glance:
 
 | Family | Category | Skills |
 |---|---:|---:|
+| Providers | 3D generation | 3 |
 | Providers | Audio enhancement | 1 |
 | Providers | Avatar video | 5 |
 | Providers | Image generation | 18 |
-| Providers | Music generation | 4 |
+| Providers | Lip sync | 1 |
+| Providers | Music generation | 5 |
 | Providers | Sound generation | 2 |
+| Providers | Source separation | 1 |
 | Providers | Speech and voice | 6 |
 | Providers | Speech to text | 3 |
-| Providers | Text to speech | 7 |
-| Providers | Video generation | 15 |
-| Providers | Voice agents | 3 |
+| Providers | Text to speech | 9 |
+| Providers | Video enhancement | 1 |
+| Providers | Video generation | 19 |
+| Providers | Video understanding | 1 |
+| Providers | Voice agents | 4 |
+| Providers | World models | 2 |
 | Production | Audio craft | 7 |
-| Production | Content formats | 17 |
+| Production | Content formats | 20 |
 | Production | Creative direction | 7 |
 | Production | Governance and delivery | 5 |
 | Production | Post-production | 5 |
@@ -50,8 +58,14 @@ At a glance:
 ```text
 skills/
   providers/
+    3d-generation/<skill-name>/
     image-generation/<skill-name>/
     video-generation/<skill-name>/
+    video-enhancement/<skill-name>/
+    video-understanding/<skill-name>/
+    world-models/<skill-name>/
+    lip-sync/<skill-name>/
+    source-separation/<skill-name>/
     text-to-speech/<skill-name>/
     speech-to-text/<skill-name>/
     speech-and-voice/<skill-name>/
