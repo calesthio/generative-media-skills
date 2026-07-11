@@ -1,6 +1,6 @@
 # Skill index
 
-This catalog lists the 130 integrated skill packages. Each leaf directory contains exactly:
+This catalog lists the 140 integrated skill packages. Each leaf directory contains exactly:
 
 - `SKILL.md`
 - `EVAL.md`
@@ -48,9 +48,19 @@ Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 - `stability-ai-image`
 - `xai-grok-imagine-image`
 
+### Image understanding
+
+- `amazon-rekognition`
+- `google-cloud-vision`
+
 ### Lip sync
 
 - `sync-labs-lipsync`
+
+### Motion capture
+
+- `deepmotion-animate-3d`
+- `move-ai-motion-capture`
 
 ### Music generation
 
@@ -140,6 +150,11 @@ Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 
 ## Production
 
+### 3D craft
+
+- `3d-asset-production`
+- `neural-reality-capture`
+
 ### Audio craft
 
 - `audio-mixing-mastering`
@@ -164,6 +179,8 @@ Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 - `fashion-campaign-production`
 - `food-beverage-content-production`
 - `game-trailer-production`
+- `immersive-spatial-video-production`
+- `livestream-event-production`
 - `music-video-production`
 - `podcast-production`
 - `product-ad-production`
@@ -196,6 +213,7 @@ Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 - `color-grading-finishing`
 - `editing-montage`
 - `motion-graphics-direction`
+- `still-image-retouching-finishing`
 - `title-kinetic-typography`
 - `vfx-compositing`
 
@@ -206,3 +224,4 @@ Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
 - `hyperframes-video-composition`
 - `manim-explainer-animation`
 - `remotion-video-composition`
+- `virtual-production-icvfx`

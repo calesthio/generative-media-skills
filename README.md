@@ -1,6 +1,6 @@
 # generative-media-skills
 
-Supercharge your AI Agents as media generation experts. Introducing **130 research-backed Agent Skills** for premium generative media production across **22 categories**: image generation, video generation, video enhancement, video understanding, 3D generation, world models, lip sync, text-to-speech, speech-to-text, music, sound effects, source separation, avatar video, voice agents, cinematic direction, post-production, content formats, delivery QA, provenance, and runtime assembly.
+Supercharge your AI Agents as media generation experts. Introducing **140 research-backed Agent Skills** for premium generative media production across **25 categories**: image generation and understanding, video generation and understanding, enhancement, 3D generation and craft, motion capture, world models, lip sync, speech and voice, music, sound effects, source separation, avatar video, cinematic direction, post-production, content formats, delivery QA, provenance, and runtime assembly.
 
 This is not a prompt-pack repo. It is a production-grade skill library for coding agents that need to make real media decisions: which provider to use, how to brief it, how to handle rights and provenance, how to QA the result, and how to ship usable creative assets.
 
@@ -34,7 +34,9 @@ At a glance:
 | Providers | Audio enhancement | 1 |
 | Providers | Avatar video | 5 |
 | Providers | Image generation | 18 |
+| Providers | Image understanding | 2 |
 | Providers | Lip sync | 1 |
+| Providers | Motion capture | 2 |
 | Providers | Music generation | 5 |
 | Providers | Sound generation | 2 |
 | Providers | Source separation | 1 |
@@ -46,12 +48,13 @@ At a glance:
 | Providers | Video understanding | 1 |
 | Providers | Voice agents | 4 |
 | Providers | World models | 2 |
+| Production | 3D craft | 2 |
 | Production | Audio craft | 7 |
-| Production | Content formats | 20 |
+| Production | Content formats | 22 |
 | Production | Creative direction | 7 |
 | Production | Governance and delivery | 5 |
-| Production | Post-production | 5 |
-| Production | Runtime assembly | 5 |
+| Production | Post-production | 6 |
+| Production | Runtime assembly | 6 |
 
 ## Repository structure
 
@@ -60,11 +63,13 @@ skills/
   providers/
     3d-generation/<skill-name>/
     image-generation/<skill-name>/
+    image-understanding/<skill-name>/
     video-generation/<skill-name>/
     video-enhancement/<skill-name>/
     video-understanding/<skill-name>/
     world-models/<skill-name>/
     lip-sync/<skill-name>/
+    motion-capture/<skill-name>/
     source-separation/<skill-name>/
     text-to-speech/<skill-name>/
     speech-to-text/<skill-name>/
@@ -75,6 +80,7 @@ skills/
     voice-agents/<skill-name>/
     audio-enhancement/<skill-name>/
   production/
+    3d-craft/<skill-name>/
     creative-direction/<skill-name>/
     audio-craft/<skill-name>/
     post-production/<skill-name>/
