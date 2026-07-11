@@ -1,0 +1,9 @@
+# OpenClaw instructions
+
+Use `AGENTS.md` as the canonical instruction file for this repository.
+
+Before creating, editing, or reviewing any skill package:
+
+1. Read `AGENTS.md`.
+2. Read `METHODOLOGY.md`.
+3. Follow the exact `SKILL.md` + `EVAL.md` leaf package contract.
