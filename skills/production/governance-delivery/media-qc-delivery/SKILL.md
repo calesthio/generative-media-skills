@@ -279,7 +279,7 @@ orchid-launch_delivery_v03_20260710/
     music-license.pdf
 ```
 
-Generate SHA-256 checksums after final files are in their delivery locations:
+Generate SHA-256 checksums after final files are in their delivery locations. Use GNU-style manifest lines with exactly two spaces between the checksum and a package-relative POSIX path:
 
 ```bash
 sha256sum platform/*.mp4 captions/*.vtt masters/*.mov > manifest-sha256.txt
@@ -288,10 +288,23 @@ sha256sum platform/*.mp4 captions/*.vtt masters/*.mov > manifest-sha256.txt
 On Windows PowerShell:
 
 ```powershell
-Get-ChildItem -Recurse -File | Where-Object { $_.Name -notlike "manifest-sha256.txt" } |
-  ForEach-Object { "$((Get-FileHash -Algorithm SHA256 -LiteralPath $_.FullName).Hash.ToLower())  $($_.FullName)" } |
+Get-ChildItem -Recurse -File | Where-Object { $_.Name -ne "manifest-sha256.txt" } |
+  ForEach-Object {
+    $relative = Resolve-Path -LiteralPath $_.FullName -Relative
+    "$((Get-FileHash -Algorithm SHA256 -LiteralPath $_.FullName).Hash.ToLower())  $($relative.TrimStart('.\').Replace('\', '/'))"
+  } |
   Set-Content manifest-sha256.txt
 ```
+
+When this skill package includes `scripts/verify_manifest.py`, use it as a deterministic fixity and completeness check before delivery:
+
+```bash
+python scripts/verify_manifest.py orchid-launch_delivery_v03_20260710 manifest-sha256.txt --require-all-files
+```
+
+The verifier accepts a package root and a SHA-256 manifest path, absolute or relative to that root. It rejects malformed lines, duplicate entries, absolute paths, traversal, paths outside the root, symlink escapes, non-regular manifest entries, and manifest self-inclusion. It hashes files as byte streams and emits stable JSON with `verified`, `failures`, and `unlisted` arrays. The script refuses symlink manifest paths and uses no-follow regular-file opens where the platform supports them; on platforms without no-follow open support, a malicious same-host actor with write access to the package directory could still race a file between validation and read, so run it on a stable package tree. Exit code `0` means all listed files verified; `2` means verification failed because files are missing, mismatched, unlisted under `--require-all-files`, or otherwise not acceptable payload files; `3` means the manifest or invocation could not be parsed or operated safely.
+
+Do not treat checksum verification as creative, legal, accessibility, policy, or QC approval. The tool proves only that the files under the package root match the manifest and, with `--require-all-files`, that regular payload files were not silently omitted from the manifest. Rights, provenance, captions, loudness, playback, perceptual defects, and destination-spec conformance still require the QC workflow above.
 
 After upload or copy, re-download or re-read the receiver-side file when possible and compare checksums. If the platform transcodes on ingest, verify ingest status and inspect the platform's playback/transcode output instead of expecting the same checksum.
 
@@ -488,6 +501,7 @@ These sources informed the guidance above. Volatile public platform facts were c
 - W3C WCAG: https://www.w3.org/TR/WCAG21/ and W3C WebVTT: https://www.w3.org/TR/webvtt1/
 - Section508.gov synchronized media guidance: https://www.section508.gov/create/synchronized-media/
 - IETF RFC 8493 BagIt: https://datatracker.ietf.org/doc/rfc8493/
+- Python standard library documentation for `hashlib`, `pathlib`, and `os.path`, checked 2026-07-11: https://docs.python.org/3/library/hashlib.html, https://docs.python.org/3/library/pathlib.html, https://docs.python.org/3/library/os.path.html
 - NIST hash functions project: https://csrc.nist.gov/projects/hash-functions
 - C2PA specification and explainer: https://spec.c2pa.org/
 - IPTC Photo Metadata Standard: https://iptc.org/standards/photo-metadata/iptc-standard/

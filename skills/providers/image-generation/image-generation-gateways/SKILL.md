@@ -98,7 +98,16 @@ Do not implement a universal payload containing `prompt`, `width`, `steps`, and 
 
 Schema reads, pricing reads, plans, and local/mocked validation do not authorize generation. Free endpoints and prepaid credits still consume a limited resource.
 
-Before every live generation require a canonical UUIDv4 attempt, a same-day price/schema/terms snapshot, positive reviewed unit price and estimate, and a finite positive ceiling. Hash one canonical authorization record containing the attempt, approval reference, exact endpoint/model/payload/count, output destination and policy, schema hash, price source/unit/floor/estimate/ceiling, and governance dispositions. `GATEWAY_APPROVAL_SHA256` must exactly equal that record; a free-form ticket string is not the gate.
+Before every live generation require a canonical UUIDv4 attempt, a same-day price/schema/terms snapshot, positive reviewed unit price and estimate, and a finite positive ceiling. Use the bundled Python 3.11+ stdlib helper `scripts/validate_plan.py` to validate the offline approval plan before any submit-capable adapter runs:
+
+```bash
+python scripts/validate_plan.py approval-plan.json --max-age-days 1
+python scripts/validate_plan.py approval-plan.json --max-age-days 1 --expected-approval-sha256 <64-hex-digest>
+```
+
+The helper never imports provider SDKs, reads credentials, makes network calls, generates media, authorizes a paid request, or submits a job. It checks gateway/model/version policy, schema URL and SHA-256, canonical payload shape, rejects unknown keys at every defined approval-plan object level, scans the full plan for likely secret-bearing keys or values, rejects non-standard JSON constants such as `NaN` and `Infinity`, output count and policy, credential-free HTTPS schema/price URLs, price source/freshness/currency/unit/unit price/billable units, `estimate == unit_price * billable_units` using decimal arithmetic, `ceiling >= estimate`, rights/moderation/governance digests, and a canonical UUIDv4 attempt. The documented safe fal pricing query parameter `endpoint_id` is allowed in `price.source`; secret-bearing query parameters and secret-looking query values are not. It emits stable redacted JSON and computes `approval_sha256` over the documented approval envelope in that output, so every accepted semantic field affects the digest. Exit code `0` means the plan is valid, `2` means validation or expected-digest mismatch failed, and `3` means parse or operational failure.
+
+Hash one canonical authorization record containing the attempt, approval reference, exact endpoint/model/payload/count, output destination and policy, schema hash, price source/unit/floor/estimate/ceiling, and governance dispositions. `GATEWAY_APPROVAL_SHA256` must exactly equal that record; a free-form ticket string is not the gate.
 
 Create the attempt ledger with `O_CREAT|O_EXCL` before POST. The attempt UUID and approval digest are single-use. Persist the provider ID immediately, before polling, output validation, or asset download. A later process may use `GATEWAY_RESUME=1` only for the same durable fal/Replicate identity; a Together timeout or an attempt without an ID must be reconciled rather than resubmitted.
 

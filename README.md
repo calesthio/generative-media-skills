@@ -1,30 +1,58 @@
-# generative-media-skills
+# Generative Media Skills
 
-Supercharge your AI Agents as media generation experts. Introducing **140 research-backed Agent Skills** for premium generative media production across **25 categories**: image generation and understanding, video generation and understanding, enhancement, 3D generation and craft, motion capture, world models, lip sync, speech and voice, music, sound effects, source separation, avatar video, cinematic direction, post-production, content formats, delivery QA, provenance, and runtime assembly.
+**Give your coding agent a media production department, not a folder of prompts.**
 
-This is not a prompt-pack repo. It is a production-grade skill library for coding agents that need to make real media decisions: which provider to use, how to brief it, how to handle rights and provenance, how to QA the result, and how to ship usable creative assets.
+Generative Media Skills is an agent-native production system for creating, directing, validating, and delivering image, video, audio, voice, music, 3D, avatar, and interactive media. It combines researched operating knowledge with executable guardrails so agents can move from a creative brief to a usable deliverable with provider context, production craft, safety boundaries, and technical checks.
 
-Use it with **Claude Code**, **Codex**, **GitHub Copilot**, **Cursor**, **OpenClaw/Hermes-style agents**, or any agent runtime that can load markdown skills. Plug it into an [OpenMontage](https://github.com/calesthio/OpenMontage) workflow and give your agent a serious media-production brain.
+**140 research-backed skills across 25 categories, with tested executable resources where deterministic checks are better than prose.**
 
-> If this project looks useful to you, a ⭐ would really mean a lot — it helps others discover it too.
+Use it with **Claude Code**, **Codex**, **GitHub Copilot**, **Cursor**, **OpenClaw/Hermes-style agents**, or any runtime that can load Agent Skills. Connect it to [OpenMontage](https://github.com/calesthio/OpenMontage) when you want the same production intelligence inside an orchestrated media workflow.
 
-## What is inside
+> It is operating knowledge and executable production support that helps an agent make evidence-based media decisions and prepare shippable work.
 
-- **Provider skills** for models and platforms like OpenAI image/audio, Google Veo/Gemini/Lyria, Runway, Luma, Kling, Seedance, Midjourney, ElevenLabs, Azure Speech, Amazon Nova/Polly/Transcribe, NVIDIA, Alibaba, xAI, Meshy, Sync Labs, Topaz Labs, TwelveLabs, multi-model gateways (fal.ai, Replicate, WaveSpeed), and more.
-- **Production skills** for cinematic shot direction, lighting, storyboard/previs, color, VFX, captions, sound design, music supervision, localization, media QA, provenance, and final delivery.
-- **Format skills** for real deliverables: UGC ads, brand launch films, SaaS demos, music videos, game trailers, ecommerce product imagery, fashion campaigns, food/beverage content, real estate listings, avatar spokesperson videos, educational animation, and more.
-- **Runtime assembly skills** for Remotion, HyperFrames, FFmpeg, ComfyUI, and Manim.
+## Start in One Prompt
 
-Every skill includes:
+Point your agent at the repository and name the production surfaces it should load:
 
-- `SKILL.md` — production guidance for the agent, with workflows, limitations, examples, and cited sources.
-- `EVAL.md` — evaluator questions, expected answers, applied tasks, scoring guidance, and critical-failure checks.
+```text
+Use generative-media-skills.
+Load:
+- skills/providers/video-generation/seedance-2-0/SKILL.md
+- skills/production/creative-direction/cinematic-shot-direction/SKILL.md
+- skills/production/audio-craft/sound-design-foley/SKILL.md
+- skills/production/governance-delivery/media-qc-delivery/SKILL.md
 
-The result: agents can do more than generate pretty outputs. They can reason about production intent, platform constraints, provider limits, safety, rights, QA, and delivery.
+Create a 15-second premium product launch clip. Include the shot plan,
+generation prompts, sound direction, rights/provenance notes, and final QA pass.
+```
 
-## Skill index
+The agent gets researched judgment from the skills and can use bundled resources when the task benefits from deterministic execution.
 
-The full catalog lives in [SKILL_INDEX.md](SKILL_INDEX.md).
+## From Brief to Delivery
+
+One repository covers the production chain:
+
+1. **Choose the right system** - compare current providers, model families, APIs, gateways, local runtimes, costs, limits, and data paths.
+2. **Direct the work** - apply cinematography, lighting, performance, production design, visual continuity, sound, music, editing, and accessibility craft.
+3. **Build real deliverables** - produce ads, launch films, social shorts, explainers, game trailers, product imagery, podcasts, avatar videos, real-estate media, and more.
+4. **Run deterministic checks** - inspect media, captions, 3D assets, ComfyUI graphs, HyperFrames timelines, gateway plans, loudness, checksums, and QA reports.
+5. **Ship with evidence** - handle provenance, rights, consent, localization, platform requirements, manifests, and final delivery QA.
+
+The agent gets judgment where judgment matters and executable validation where prose is not enough. When a skill includes executable resources, its `SKILL.md` explains when and how to use them.
+
+## Why It Is Different
+
+- **Current provider intelligence** - skills cite official docs, model cards, API references, pricing surfaces, limits, and verification dates for volatile facts.
+- **Real production craft** - the library covers how to direct and finish media, not only how to call a model.
+- **Executable guardrails** - deterministic work moves into tested scripts instead of being repeatedly improvised from code blocks.
+- **Evaluation built in** - every skill has a repository-only `EVAL.md` with subject-specific scoring, applied tasks, and critical failures.
+- **Provider-independent workflows** - production skills remain useful when models and vendors change.
+- **Progressive disclosure** - agents load the entrypoint first, then scripts, references, or assets only when the task needs them.
+- **Portable publication** - skills can be bundled without leaking hidden evaluations or repository-only tests.
+
+## Full Catalog
+
+Browse all 140 packages in [SKILL_INDEX.md](SKILL_INDEX.md).
 
 At a glance:
 
@@ -56,7 +84,7 @@ At a glance:
 | Production | Post-production | 6 |
 | Production | Runtime assembly | 6 |
 
-## Repository structure
+## Repository Structure
 
 ```text
 skills/
@@ -91,33 +119,42 @@ skills/
 <skill-name>/
   SKILL.md
   EVAL.md
+  scripts/       optional, bundled when present
+  references/    optional, bundled when present
+  assets/        optional, bundled when present
+  tests/         optional, repository-only
+
+tools/
+  repository maintenance tooling, such as package export
 ```
 
-## How to use with agents
+## What Is Inside a Skill
 
-Point your agent at this repo and tell it to load the relevant skill before media work.
+Every authoring package contains:
 
-Example:
+- `SKILL.md` - the production entrypoint: decisions, workflows, limitations, examples, and cited sources.
+- `EVAL.md` - the hidden evaluator: expected answers, applied tasks, scoring, and critical failures.
 
-```text
-Use generative-media-skills.
-For this task, load:
-- skills/providers/video-generation/seedance-2-0/SKILL.md
-- skills/production/creative-direction/cinematic-shot-direction/SKILL.md
-- skills/production/governance-delivery/media-qc-delivery/SKILL.md
+When the subject benefits from progressive disclosure, a skill may also contain:
 
-Create a 15-second premium product launch clip and include a QA pass.
-```
+- `scripts/` - publishable executable helpers.
+- `references/` - publishable on-demand documentation.
+- `assets/` - publishable static resources.
+- `tests/` - repository-only validation for bundled resources.
 
-For evaluation, keep `EVAL.md` hidden from the producing agent. Use it only after the agent has completed the work.
+The producing agent receives the published package, never `EVAL.md` or repository tests.
 
-## Why this matters
+## Built for Agent Workflows
 
-Generative media quality increasingly depends on orchestration, not just model access. The best outputs come from agents that understand provider behavior, creative direction, production craft, legal and platform constraints, asset continuity, and delivery requirements.
+Use the repository directly with Claude Code, Codex, GitHub Copilot, Cursor, OpenClaw/Hermes-style agents, or compatible Agent Skills runtimes. Skills are plain Markdown plus optional portable resources, so they can be inspected, copied, packaged, evaluated, and orchestrated without adopting a proprietary runtime.
 
-This repo gives those agents the missing layer: compact, research-backed operating knowledge for media production.
+The design principle is simple: **reason with evidence, execute deterministically, and keep final approval accountable.**
 
-## Agent instructions
+## Contributing
+
+New skills are independently researched and separately reviewed. Executable resources must be materially better than prose, portable, safe by default, dependency-explicit, and covered by failure and safety tests. See [CONTRIBUTING.md](CONTRIBUTING.md) and [METHODOLOGY.md](METHODOLOGY.md).
+
+## Agent Instructions
 
 `AGENTS.md` is the canonical instruction file for this repository. Other agent entrypoints in this repo delegate back to it:
 
@@ -132,6 +169,8 @@ This repo gives those agents the missing layer: compact, research-backed operati
 - `HERMES.md`
 
 Before editing or reviewing skills, read [AGENTS.md](AGENTS.md) and [METHODOLOGY.md](METHODOLOGY.md).
+
+If this project gives your agents a stronger production brain, a GitHub star helps more builders find it.
 
 ## License
 

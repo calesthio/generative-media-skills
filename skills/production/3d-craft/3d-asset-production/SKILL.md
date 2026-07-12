@@ -383,10 +383,15 @@ Structural validation:
 
 - File opens in the intended DCC/engine/viewer without errors.
 - glTF/GLB passes glTF Validator with no errors and only accepted warnings.
+- For glTF/GLB package triage before full validation or handoff, run the bundled Python preflight helper when available: `python scripts/inspect_gltf.py path/to/asset.gltf` or `python scripts/inspect_gltf.py path/to/asset.glb`. It emits stable JSON and exits `0` when no preflight errors are found, `2` for validation findings, and `3` for operational read/parse/container failures.
 - USD opens in `usdview` or the target USD consumer; prim paths, variants, references, payloads, and material bindings resolve.
 - FBX imports into the exact target engine version with correct scale, normals, UVs, material slots, skeleton, morph targets, and animation settings.
 - Texture links are relative or packaged as required.
 - No missing files, absolute local paths, hidden dependencies, or unsupported extensions.
+
+The bundled `scripts/inspect_gltf.py` helper is a bounded preflight, not a conformance validator. Use it to safely read `.gltf` JSON or the JSON chunk of a GLB v2 container; check GLB header, declared length, chunk order, chunk truncation, JSON chunk parsing, and the first BIN chunk relationship; inventory scenes, nodes, meshes, primitives, materials, textures, images, animations, skins, cameras, accessors, buffers, bufferViews, and samplers; reject absolute, traversal, outside-root, scheme/query/fragment, and missing local external buffer/image URIs; record and size-check data URIs; and catch common index-reference mistakes across default scenes, scene nodes, node mesh/skin/camera/children, mesh primitive accessors/materials/morph targets, material texture infos, textures/images/samplers, buffers/bufferViews/accessors, skins, and animation samplers/channels.
+
+Always follow a clean preflight with Khronos glTF Validator for full glTF correctness, binary accessor data, image content, sparse accessors, extension behavior, NaN/Infinity and numeric constraints, and complete schema coverage. Then import the asset into the receiving DCC, engine, or viewer for visual/material/animation QA. A clean preflight only says the package is structurally plausible and its local dependencies are safe to read.
 
 Visual validation:
 

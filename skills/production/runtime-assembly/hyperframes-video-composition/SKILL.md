@@ -253,12 +253,31 @@ Production heuristics:
 
 Run the HyperFrames loop as a gate sequence:
 
-1. `npx hyperframes doctor` to verify environment when starting or when render behavior changes.
-2. `npx hyperframes lint` for static composition findings.
-3. `npx hyperframes validate` when available in the installed CLI or project workflow; do not rely on render alone for browser-state issues.
-4. `npx hyperframes preview` and scrub representative frames: first frame, scene boundaries, dense text, data/chart moment, caption-heavy moment, background-video scenes, CTA/disclaimer, and final frame.
-5. Render only after lint/validation and preview checks pass or documented exceptions are approved.
-6. Post-render probe: duration, resolution, fps, codec/container, audio streams, frame samples, black/frozen frames, clipped text, caption sync, and audible mix.
+1. Run the bundled static preflight when you need a dependency-free local check of explicit timing attributes before starting browser work: `python scripts/audit_timeline.py index.html --duration 30 --fps 30`.
+2. `npx hyperframes doctor` to verify environment when starting or when render behavior changes.
+3. `npx hyperframes lint` for HyperFrames-native static composition findings.
+4. `npx hyperframes validate` when available in the installed CLI or project workflow; do not rely on render alone for browser-state issues.
+5. `npx hyperframes preview` and scrub representative frames: first frame, scene boundaries, dense text, data/chart moment, caption-heavy moment, background-video scenes, CTA/disclaimer, and final frame.
+6. Render only after lint/validation and preview checks pass or documented exceptions are approved.
+7. Post-render probe: duration, resolution, fps, codec/container, audio streams, frame samples, black/frozen frames, clipped text, caption sync, and audible mix.
+
+### Bundled static timeline preflight
+
+This package includes `scripts/audit_timeline.py`, a Python 3.11+ stdlib CLI for preflighting local HyperFrames composition HTML. It parses HTML with `html.parser`; it does not execute JavaScript, drive a browser, fetch remote assets, evaluate CSS layout, inspect animation timelines, decode media, or prove render correctness.
+
+Use it before HyperFrames lint/validate/preview when you want a stable JSON inventory of elements with timing attributes and deterministic static findings for:
+
+- finite nonnegative numeric `data-start` values;
+- finite positive numeric `data-duration` values on timed clips/media;
+- integer nonnegative `data-track-index` values where timed clips/media require tracks;
+- `class="clip"` on timed visual elements, while allowing the composition root with `data-composition-id` to carry root metadata;
+- duplicate HTML IDs;
+- timed element ends beyond optional `--duration`;
+- frame-boundary alignment when `--fps` is explicit, with configurable `--tolerance`.
+
+The command emits sorted JSON with `status`, `summary`, `inventory`, and `findings`. Findings use stable `severity`, `code`, `element`, `location`, and `message` fields. Exit codes are `0` for no errors, `2` for static findings at error severity or warnings promoted by `--warnings-as-errors`, and `3` for parse or operational failure such as a missing or unreadable input file. Treat warnings as production review items unless the project requires frame-perfect timing gates.
+
+This preflight is an early guardrail only. It cannot replace `npx hyperframes lint`, `npx hyperframes validate`, browser preview/scrubbing, render, post-render media probe, or human QA. HyperFrames may also add runtime-specific rules that this static preflight intentionally does not know.
 
 If the installed CLI differs from these command names, re-check `npx hyperframes --help` and use the equivalent commands. Record the exact command, package version, and environment in the render report.
 

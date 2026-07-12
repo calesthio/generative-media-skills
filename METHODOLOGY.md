@@ -17,19 +17,58 @@ A skill should cover one coherent subject, such as:
 
 Split skills when capabilities require substantially different research, production reasoning, or evaluation. Do not split a coherent subject merely to keep files short.
 
-## Required package
+## Leaf package contract
 
 ```text
 skills/<family>/<category>/<skill-name>/
-├── SKILL.md
-└── EVAL.md
+|-- SKILL.md
+|-- EVAL.md
+|-- scripts/      optional, publishable executable code
+|-- references/   optional, publishable on-demand documentation
+|-- assets/       optional, publishable static resources
+`-- tests/        optional, repository-only tests
 ```
 
 Use `providers` as the family for vendor, model-family, API, gateway, or hosted/open-weight runtime skills. Use `production` for provider-independent craft, direction, deliverable, finishing, and quality-assurance skills. Choose a capability-specific category such as `image-generation`, `video-generation`, `text-to-speech`, `creative-direction`, or `content-formats`. Create a new category only when an accepted skill requires it; do not add empty category directories.
 
 `SKILL.md` must use valid Agent Skills frontmatter with a kebab-case `name` matching its directory and a specific `description` explaining what the skill does and when an agent should use it.
 
-No other files belong inside a skill directory.
+`EVAL.md` is required for repository authoring and must stay hidden from the evaluated agent. It is never part of the default published package.
+
+The only optional top-level directories inside a leaf skill are:
+
+- `scripts/` for executable code that is useful when the skill is copied or bundled;
+- `references/` for longer documentation the agent should load only when needed;
+- `assets/` for static resources such as small fixtures, example media, diagrams, or schemas required by the skill;
+- `tests/` for repository-only tests of bundled scripts, resource integrity, or acceptance behavior.
+
+Do not add arbitrary files, sidecar manifests, notes, templates, or additional directories inside a leaf skill. Category directories contain only skill subdirectories.
+
+## Publication boundary
+
+A published skill package consists of `SKILL.md` plus `scripts/`, `references/`, and `assets/` when present. `EVAL.md` and `tests/` are excluded by default.
+
+Root `tools/` may contain repository maintenance tooling such as a package exporter. A skill copied from `skills/.../<skill-name>/` must not silently depend on root tooling at runtime.
+
+## Supporting resources
+
+Use supporting resources for progressive disclosure. `SKILL.md` should remain the entrypoint: it tells the agent what the skill is for, what to do first, and which bundled resource to open or run for a specific need. Reference bundled files with relative paths so the package remains portable when installed outside this repository.
+
+Use `references/` when detailed facts, API tables, examples, or troubleshooting material would make `SKILL.md` too dense. Do not move essential activation, safety, rights, or evaluation-facing behavior out of `SKILL.md`.
+
+Use `assets/` only for resources that are small enough and licensed or authored clearly enough to publish with the skill. Prefer text fixtures, schemas, tiny sample inputs, and static helper media over large binaries.
+
+Use `scripts/` only when executable code is warranted: repeatable validation, deterministic transformation, fixture generation, metadata inspection, or a helper that materially improves production quality. Scripts must:
+
+- be safe by default and avoid destructive behavior without explicit user intent;
+- provide a dry-run or preview mode for side effects such as writing, deleting, uploading, publishing, or charging paid APIs;
+- declare runtime and dependency expectations in `SKILL.md` or adjacent script comments/docstrings;
+- use relative paths from the skill directory or explicit user-provided paths rather than repository-root assumptions;
+- avoid secrets in source, logs, fixtures, and command examples;
+- fail clearly when dependencies, credentials, or inputs are missing;
+- have repository tests that cover normal behavior, failures, and safety boundaries.
+
+Maintenance ownership stays with the skill owner. If a script, reference, or asset changes, review the `SKILL.md` navigation and `EVAL.md` scoring assumptions in the same change.
 
 ## Independent authoring
 
@@ -39,7 +78,7 @@ Each assignment should provide only:
 
 - the skill name;
 - the intended scope;
-- the two-file contract;
+- the leaf package contract;
 - the evidence policy;
 - the evaluation-integrity rules.
 
@@ -142,11 +181,13 @@ There is no fixed number of questions. Coverage should reflect the subject's com
 
 ## Evaluation integrity
 
-The evaluated agent receives the user task and `SKILL.md`, but not `EVAL.md`.
+The evaluated agent receives the user task and the published package: `SKILL.md` plus any included `scripts/`, `references/`, and `assets/`. It must not receive `EVAL.md` or `tests`.
 
-The evaluator then uses `EVAL.md` to score the captured response. For isolated forward tests, install or copy only `SKILL.md` into the test environment.
+The evaluator then uses `EVAL.md` to score the captured response. For isolated forward tests, install or copy only the published package into the test environment.
 
 Do not link to `EVAL.md` from `SKILL.md` or instruct a production agent to read it.
+
+Evaluations must still test reasoning, judgment, and production competence. Bundled scripts may support deterministic checks or artifact generation, but they must not reduce the evaluation to running an answer-key implementation.
 
 ## Review process
 
@@ -170,11 +211,13 @@ Reviewers must not rewrite independent skills into a shared voice or heading str
 
 A skill is ready for review when:
 
-- its directory contains only `SKILL.md` and `EVAL.md`;
+- its directory contains required `SKILL.md` and hidden `EVAL.md`, plus only allowed optional directories when needed;
 - its scope is coherent and distinct;
 - its consequential claims are supported;
 - volatile facts are dated;
 - complete examples are included where useful;
+- supporting resources are portable, relatively referenced, and progressively disclosed;
+- scripts are warranted, safe by default, dependency-explicit, and covered by repository tests;
 - its evaluation measures applied production competence;
-- an evaluated agent can be tested without seeing the answer key;
+- an evaluated agent can be tested with the published package without seeing the answer key or tests;
 - the skill reflects its own subject rather than the flavor of another skill.
