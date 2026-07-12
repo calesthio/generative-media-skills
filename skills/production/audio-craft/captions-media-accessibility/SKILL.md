@@ -29,6 +29,8 @@ Use these as factual constraints when relevant, citing the source in your output
 - YouTube Help listed SRT and SBV/SubViewer as basic formats and WebVTT/TTML/SAMI/RealText as advanced formats; basic SRT/SBV files must be plain UTF-8 and YouTube notes that styling support is limited. Source: YouTube Help, verified 2026-07-10.
 - Vimeo Help stated that Vimeo supports SRT and WebVTT for captions/subtitles, recommends WebVTT, and requires UTF-8 encoding for special characters. Source: Vimeo Help, verified 2026-07-10.
 - WebVTT is a UTF-8 timed-text format used with media tracks; it begins with `WEBVTT`, contains timed cues, and can be used for captions, subtitles, descriptions, chapters, or metadata depending on player support. Sources: W3C/MDN and Library of Congress WebVTT documentation, verified 2026-07-10.
+- W3C WebVTT syntax requires UTF-8, a `WEBVTT` file signature, cue timings with period milliseconds, ordered cue start times, and end times greater than start times. Cue overlap is allowed by the format for captions/subtitles, but many caption delivery workflows still reject or flag overlaps. Source: W3C WebVTT Candidate Recommendation Draft, verified 2026-07-11.
+- SRT is a widely used but lightly standardized plain-text sidecar convention made of repeated blocks: numeric counter, start/end timing line, caption text, and a blank-line separator. Common delivery practice uses `HH:MM:SS,mmm --> HH:MM:SS,mmm` timing and UTF-8 for modern platform upload, even though legacy SRT files may use other encodings. Source: Library of Congress SRT format description plus platform guidance already cited here, verified 2026-07-11.
 - Netflix timed-text guidance is platform-specific, not universal law. Its public partner help guidance includes 2-line maximums, language-specific style guides, minimum/maximum event durations in general requirements, and U.S. English SDH conventions for bracketed speaker IDs/sound effects. Source: Netflix Partner Help Center, verified 2026-07-10.
 
 ## Production heuristics to apply
@@ -198,6 +200,86 @@ Delivery:
 - Sidecars were tested in the target platform or player, not only in a local editor.
 - Localized files use target-language style, not source-language line breaks copied blindly.
 
+## Bundled caption validator
+
+This skill includes a standard-library Python 3.11+ validator at `scripts/validate_captions.py`. Use it when an agent needs a local, deterministic check of SRT or WebVTT sidecar structure before handoff, platform upload, or regression review.
+
+What it validates:
+
+- UTF-8 decoding.
+- SRT and WebVTT structural parsing by cue blocks, not whole-file substitutions.
+- WebVTT `WEBVTT` signature/header separation before cue blocks.
+- Focused WebVTT validation for `STYLE`, `REGION`, and cue timing settings; unsupported, duplicate, malformed, or out-of-range settings fail clearly rather than being silently ignored.
+- Auto-detected or explicit `srt`/`vtt` format.
+- Timestamp syntax: SRT comma milliseconds; WebVTT period milliseconds with `MM:SS.mmm` or `HH:MM:SS.mmm`.
+- Cue start time before cue end time.
+- Cue ordering and overlap warnings/errors according to this tool's delivery-oriented policy.
+- Cue text presence.
+- Configurable maximum text lines and visible characters per line.
+- Configurable visible characters-per-second warning.
+
+Boundaries:
+
+- The tool does not certify WCAG, FCC, ADA, Section 508, broadcaster, streamer, or platform compliance.
+- The tool validates a focused subset of WebVTT settings used in production sidecars; it does not fully parse CSS inside `STYLE` blocks or prove player-specific rendering behavior.
+- The tool does not judge transcript accuracy against audio, speaker identity, translation quality, semantic completeness, contrast, placement, flashing safety, or whether captions are sufficient for a given legal duty.
+- The tool does not rewrite, compress, translate, normalize Unicode, or semantically edit captions.
+- Treat warnings as production review signals. Some WebVTT overlaps are syntactically allowed, but this validator flags overlaps because many caption delivery workflows require non-overlapping readable sidecars.
+
+Example CLI calls:
+
+```bash
+python skills/production/audio-craft/captions-media-accessibility/scripts/validate_captions.py captions_en.srt
+python skills/production/audio-craft/captions-media-accessibility/scripts/validate_captions.py --format vtt captions_en.txt
+python skills/production/audio-craft/captions-media-accessibility/scripts/validate_captions.py --max-lines 2 --max-chars-per-line 42 --cps-warning 20 captions_en.vtt
+python skills/production/audio-craft/captions-media-accessibility/scripts/validate_captions.py --warnings-as-errors captions_en.srt
+```
+
+Exit codes:
+
+- `0`: no validation errors; warnings may be present unless `--warnings-as-errors` is set.
+- `2`: validation errors, or warnings with `--warnings-as-errors`.
+- `3`: operational or parse failure, such as unreadable file, invalid UTF-8, unknown format, missing WebVTT header, or malformed cue block.
+
+JSON output schema:
+
+```json
+{
+	"tool": "validate_captions",
+	"version": "1.0.0",
+	"status": "passed",
+	"summary": {
+		"files": 1,
+		"cues": 2,
+		"errors": 0,
+		"warnings": 0
+	},
+	"files": [
+		{
+			"path": "captions_en.srt",
+			"format": "srt",
+			"cues": 2,
+			"errors": 0,
+			"warnings": 0
+		}
+	],
+	"findings": [
+		{
+			"severity": "warning",
+			"code": "characters_per_second",
+			"cue": 2,
+			"location": {
+				"file": "captions_en.srt",
+				"line": 6
+			},
+			"message": "Cue reads at 22.50 characters per second; warning threshold is 20"
+		}
+	]
+}
+```
+
+Stable finding fields are `severity`, `code`, `cue`, `location`, and `message`. `location` always contains `file` and may contain `line` and `column`. Known finding codes include `invalid_utf8`, `file_read_failed`, `format_unknown`, `webvtt_header_missing`, `webvtt_header_invalid`, `webvtt_late_header_block`, `webvtt_timing_missing`, `srt_block_too_short`, `srt_index_invalid`, `timestamp_syntax`, `time_order`, `cue_order`, `cue_overlap`, `cue_text_missing`, `srt_index_sequence`, `max_lines`, `max_chars_per_line`, `characters_per_second`, and `no_cues`.
+
 ## Examples
 
 ### Example: social ad caption plan
@@ -310,5 +392,7 @@ Verified on 2026-07-10:
 - Vimeo Help caption file types: https://help.vimeo.com/hc/en-us/articles/21957353918609-Troubleshooting-Caption-file-types
 - MDN WebVTT format: https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API/Web_Video_Text_Tracks_Format
 - Library of Congress WebVTT format description: https://www.loc.gov/preservation/digital/formats/fdd/fdd000567.shtml
+- W3C WebVTT Candidate Recommendation Draft: https://www.w3.org/TR/webvtt1/
+- Library of Congress SRT format description: https://www.loc.gov/preservation/digital/formats/fdd/fdd000569.shtml
 - Netflix Timed Text Style Guide general requirements: https://partnerhelp.netflixstudios.com/hc/en-us/articles/215758617-Timed-Text-Style-Guide-General-Requirements
 - Netflix English (USA) Timed Text Style Guide: https://partnerhelp.netflixstudios.com/hc/en-us/articles/217350977-English-USA-Timed-Text-Style-Guide

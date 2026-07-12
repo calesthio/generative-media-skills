@@ -1,11 +1,11 @@
 # Skill index
 
-This catalog lists the 140 integrated skill packages. Each leaf directory contains exactly:
+This catalog lists the 140 integrated skill packages. Each leaf directory contains the required authoring pair:
 
 - `SKILL.md`
 - `EVAL.md`
 
-Use `SKILL.md` for production work. Keep `EVAL.md` hidden until evaluation.
+Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `tests/` directories under the repository contract. Use `SKILL.md` for production work and publish only `SKILL.md` plus `scripts/`, `references/`, and `assets/` when present. Keep `EVAL.md` and tests hidden until evaluation or maintenance.
 
 ## Providers
 

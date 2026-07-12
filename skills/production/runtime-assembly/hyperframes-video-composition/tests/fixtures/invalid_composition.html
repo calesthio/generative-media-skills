@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Invalid HyperFrames fixture</title>
+</head>
+<body>
+  <main id="stage" data-composition-id="invalid-demo" data-start="0" data-width="1920" data-height="1080">
+    <section id="scene-dup" class="scene clip" data-start="0" data-duration="2.05" data-track-index="0">
+      <h1 id="scene-dup" data-start="0.11" data-duration="1" data-track-index="2">Missing clip class</h1>
+      <p id="bad-start" class="clip" data-start="NaN" data-duration="1" data-track-index="1">Bad start</p>
+      <div id="bad-duration" class="clip" data-start="1" data-duration="0" data-track-index="1">Bad duration</div>
+      <span id="bad-track" class="clip" data-start="1.5" data-duration="1" data-track-index="1.2">Bad track</span>
+      <video id="missing-track" class="clip" data-start="2" data-duration="1" src="./assets/clip.mp4" muted playsinline></video>
+      <h2 id="late" class="clip" data-start="3" data-duration="2" data-track-index="3">Too late</h2>
+    </section>
+  </main>
+</body>
+</html>

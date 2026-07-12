@@ -37,6 +37,48 @@ Documented facts:
 - WCAG 2.2 understanding guidance for low/no background audio says background sounds should be at least 20 dB lower than foreground speech, except brief sounds, to support users who are hard of hearing. Verified 2026-07-10: https://www.w3.org/WAI/WCAG22/Understanding/low-or-no-background-audio.html
 - FFmpeg's `loudnorm` filter implements EBU R128 loudness normalization, supports single- and double-pass operation, can target integrated loudness, loudness range, and true peak, and upsamples to 192 kHz in dynamic mode for true-peak detection. Verified 2026-07-10: https://ffmpeg.org/ffmpeg-filters.html#loudnorm
 
+## Bundled loudness measurement tool
+
+Use `scripts/measure_loudness.py` when an agent needs a repeatable local measurement before making mix or delivery decisions. It requires Python 3.11+ and an `ffmpeg` executable with the `loudnorm` filter. The script invokes FFmpeg with an argument array rather than a shell, selects the first audio stream, and emits stable JSON. It never normalizes, rewrites, or replaces the input.
+
+Measure without assuming a target:
+
+```bash
+python scripts/measure_loudness.py final_mix.wav --pretty
+```
+
+Compare against an explicitly selected project target:
+
+```bash
+python scripts/measure_loudness.py final_mix.wav \
+	--target-lufs -16 --lufs-tolerance 1 \
+	--target-true-peak -1 --pretty
+```
+
+For mono files intended to play from both speakers as dual mono, request FFmpeg's dual-mono compensation explicitly:
+
+```bash
+python scripts/measure_loudness.py narration_mono.wav --dual-mono --pretty
+```
+
+The JSON report includes:
+
+- integrated loudness in LUFS;
+- true peak in dBTP;
+- loudness range in LU;
+- measurement threshold;
+- analysis mode, whether dual-mono compensation was requested, and FFmpeg's reported loudnorm offset under tool metadata;
+- optional target checks with actual values, deltas, tolerances, and pass/fail results;
+- an explicit note that results depend on the FFmpeg build, filter, algorithm, and analysis mode.
+
+Exit codes are:
+
+- `0`: measurement completed and every requested target check passed;
+- `2`: measurement completed but one or more requested target checks failed;
+- `3`: operational failure such as a missing input, missing FFmpeg, timeout, absent audio stream, or malformed loudnorm output.
+
+This tool is deterministic assistance, not final mix approval. Listen to the complete deliverable, confirm the selected target is authoritative, inspect channel layout and codec behavior, and remeasure encoded outputs when delivery risk warrants it. Use a proper calibrated meter or the receiver's mandated QC system when the specification requires one.
+
 Empirical observations:
 
 - Small speakers often hide sub-bass and exaggerate upper-mid harshness; a mix that feels full only because of sub energy may feel thin on phones.

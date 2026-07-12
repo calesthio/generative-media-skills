@@ -110,7 +110,8 @@ Award:
 
 ## Package and executable-example checks (unscored, mandatory)
 
-- The directory contains exactly `SKILL.md` and `EVAL.md`; both decode as UTF-8, Markdown fences balance, `SKILL.md` passes `quick_validate.py`, and the rubric totals exactly 100.
+- The authoring leaf contains UTF-8 `SKILL.md` plus hidden UTF-8 `EVAL.md`; any optional top-level items are only `scripts/`, `references/`, `assets/`, or `tests/`; Markdown fences balance; and the rubric totals exactly 100.
+- Validate the publishable package with `python tools/package_skill.py skills/providers/video-generation/vidu-video <temporary-output> --list`; the listed files must exclude `EVAL.md` and `tests/`, and `EVAL.md` must not be exposed to the producing agent.
 - Extract the Python fence and parse it with `ast.parse` without importing or executing it.
 - Run its default dry-run in an isolated temporary directory with networking denied or monkeypatched; require exit 0, one JSON approval record, zero state files, and zero network attempts.
 - Adversarially set execute mode with missing/stale approval fields; require fail-closed behavior before state or network. In a fully approved mocked run, make the mocked `urlopen` raise an ambiguous timeout and require exactly one attempted POST, no retry, and a durable `UNKNOWN` state. A second run with the same request digest must refuse before network.

@@ -204,9 +204,9 @@ Expected behavior:
 
 ## Evaluator package checks (unscored, mandatory)
 
-- The directory contains exactly `SKILL.md` and `EVAL.md`; both decode as UTF-8.
-- `SKILL.md` passes the repository `quick_validate.py` check.
-- Triple-backtick fences are balanced in both files.
+- The authoring leaf contains UTF-8 `SKILL.md` plus hidden UTF-8 `EVAL.md`, and any optional top-level items are only `scripts/`, `references/`, `assets/`, or `tests/`.
+- Validate the publishable package with `python tools/package_skill.py skills/providers/video-generation/midjourney-video <temporary-output> --list`; the listed files must exclude `EVAL.md` and `tests/`.
+- Triple-backtick fences are balanced in source Markdown files.
 - The rubric section weights add to exactly 100 points, and the displayed total is 100.
 - Static review finds no executable Midjourney automation, credential/session-token handling, paid-call path, upload action, or claim that evaluation performed a UI action.
 

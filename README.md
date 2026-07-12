@@ -6,7 +6,7 @@ This is not a prompt-pack repo. It is a production-grade skill library for codin
 
 Use it with **Claude Code**, **Codex**, **GitHub Copilot**, **Cursor**, **OpenClaw/Hermes-style agents**, or any agent runtime that can load markdown skills. Plug it into an [OpenMontage](https://github.com/calesthio/OpenMontage) workflow and give your agent a serious media-production brain.
 
-> If this project looks useful to you, a ⭐ would really mean a lot — it helps others discover it too.
+> If this project looks useful to you, a star would really mean a lot - it helps others discover it too.
 
 ## What is inside
 
@@ -15,10 +15,17 @@ Use it with **Claude Code**, **Codex**, **GitHub Copilot**, **Cursor**, **OpenCl
 - **Format skills** for real deliverables: UGC ads, brand launch films, SaaS demos, music videos, game trailers, ecommerce product imagery, fashion campaigns, food/beverage content, real estate listings, avatar spokesperson videos, educational animation, and more.
 - **Runtime assembly skills** for Remotion, HyperFrames, FFmpeg, ComfyUI, and Manim.
 
-Every skill includes:
+Every skill includes the required authoring pair:
 
-- `SKILL.md` — production guidance for the agent, with workflows, limitations, examples, and cited sources.
-- `EVAL.md` — evaluator questions, expected answers, applied tasks, scoring guidance, and critical-failure checks.
+- `SKILL.md` - production guidance for the agent, with workflows, limitations, examples, and cited sources.
+- `EVAL.md` - evaluator questions, expected answers, applied tasks, scoring guidance, and critical-failure checks.
+
+Some skills may also include bounded optional resources:
+
+- `scripts/` - publishable executable helpers when code is warranted.
+- `references/` - publishable on-demand docs for progressive disclosure.
+- `assets/` - publishable static resources used by the skill.
+- `tests/` - repository-only tests for scripts, resources, or acceptance behavior.
 
 The result: agents can do more than generate pretty outputs. They can reason about production intent, platform constraints, provider limits, safety, rights, QA, and delivery.
 
@@ -91,6 +98,13 @@ skills/
 <skill-name>/
   SKILL.md
   EVAL.md
+  scripts/       optional, bundled when present
+  references/    optional, bundled when present
+  assets/        optional, bundled when present
+  tests/         optional, repository-only
+
+tools/
+  repository maintenance tooling, such as package export
 ```
 
 ## How to use with agents
@@ -110,6 +124,14 @@ Create a 15-second premium product launch clip and include a QA pass.
 ```
 
 For evaluation, keep `EVAL.md` hidden from the producing agent. Use it only after the agent has completed the work.
+
+## Bundling and resources
+
+The default publication boundary for a skill is `SKILL.md` plus `scripts/`, `references/`, and `assets/` when present. `EVAL.md` and `tests/` are excluded from default bundles.
+
+Optional resources are for progressive disclosure: `SKILL.md` remains the entrypoint and points agents to relative paths only when extra documentation, static resources, or executable helpers are needed. Scripts should be portable, dependency-explicit, safe by default, and dry-run capable for side effects.
+
+Repository tests stay with the skill under `tests/` but are not bundled. Package export should be handled by root maintenance tooling under `tools/` when such tooling is present; copied skills must not depend on root tools at runtime.
 
 ## Why this matters
 

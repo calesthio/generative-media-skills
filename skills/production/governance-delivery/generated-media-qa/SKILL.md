@@ -53,7 +53,7 @@ Check:
 
 - File integrity: opens in at least two players/viewers; no truncated tail, decode errors, missing streams, alpha surprises, or silent channels.
 - Container and streams: expected format, codec, profile, resolution, pixel aspect ratio, frame rate, duration, color primaries/transfer/matrix, bit depth, bitrate, audio sample rate, channel layout, and captions/subtitle streams.
-- Visual defects: black frames, freeze frames, dropped/duplicated frames, banding, macroblocking, moiré, aliasing, unintended borders, watermark remnants, bad mattes, poor keying, crop errors, unsafe title area, unreadable small text, and compression damage.
+- Visual defects: black frames, freeze frames, dropped/duplicated frames, banding, macroblocking, moire, aliasing, unintended borders, watermark remnants, bad mattes, poor keying, crop errors, unsafe title area, unreadable small text, and compression damage.
 - Audio defects: clipping, inter-sample peaks, noise floor, hum, clicks, pops, gating artifacts, reverb wash, harsh sibilance, phase cancellation, channel imbalance, missing stems, and abrupt edits.
 - Versioning: filename, slate, burned-in timecode, metadata, export preset, and revision number match the delivery tracker.
 
@@ -177,6 +177,83 @@ Write reports that make action obvious:
 - Residual risks: what could not be verified and who must approve.
 
 For revision loops, require a delta review plus spot checks around changed areas and one full playback/viewing pass. Fixing one generated defect often creates another nearby.
+
+## Deterministic report normalization helper
+
+Use `scripts/normalize_qa_report.py` when a QA report needs a stable JSON handoff for automation, ticket creation, release gates, or producer review. The helper is Python 3.11+ and uses only the standard library. It validates the report shape, normalizes and sorts findings, summarizes severity counts, and computes a mechanical disposition from an explicit policy supplied in the report or via CLI.
+
+Run it from a copied skill package or this repository:
+
+```bash
+python scripts/normalize_qa_report.py report.json
+python scripts/normalize_qa_report.py report.json --policy '{"dispositions":{"critical":"reject","major":"hold","minor":"ready","observation":"ready"},"waivable_severities":["major"],"non_waivable_areas":["rights","accessibility","safety","policy"]}'
+```
+
+Exit codes:
+
+- `0`: valid report and mechanical disposition is `ready`.
+- `2`: validly parsed report that results in `hold` or `reject`, or a report with schema validation findings.
+- `3`: operational parse/read/write failure, such as invalid JSON or an unreadable file.
+
+The input JSON must include:
+
+- `asset_id`: stable asset or delivery ID.
+- `review`: object with `reviewer` and ISO-compatible `date`; include target platform, intended use, and source package when available.
+- `policy`: explicit disposition rules. Provide `dispositions` mapping each severity (`critical`, `major`, `minor`, `observation`) to `ready`, `hold`, or `reject`. Optional `waivable_severities` lists severities that a supplied waiver may mechanically unblock. Optional `non_waivable_areas` is extended by the script to always include `rights`, `accessibility`, `safety`, and `policy`.
+- `checks`: array of automated or manual checks with `id`, `status` (`pass`, `fail`, `not_applicable`, or `not_checked`), optional `evidence_type`, and evidence detail.
+- `findings`: array with `severity`, `area`, `issue`, `evidence_type`, `evidence_detail`, and a locator (`timecode`, `frame`, or `region`) whenever the evidence is an empirical observation or the issue is visual, audio, captions, accessibility, or safety related.
+
+Evidence type must remain one of `documented_fact`, `empirical_observation`, or `heuristic`. Do not collapse these lanes during normalization: a documented platform requirement, a measured artifact, and a professional judgment have different authority.
+
+Waivers are intentionally narrow. A blocking finding can be mechanically unblocked only when the policy allows that severity and the finding includes a waiver with non-empty `owner` and `reference`. The helper never waives rights, accessibility, safety, or policy findings, even if a report supplies a waiver.
+
+The helper does not inspect media, judge subjective quality, verify claims, grant rights/accessibility/safety exceptions, or issue final approval. Its output includes `mechanical_only: true` and `final_approval: false`; a producer, reviewer, legal owner, accessibility owner, or release owner still has to make the actual acceptance decision.
+
+Example minimal input:
+
+```json
+{
+	"asset_id": "skincare-ad-v004",
+	"review": {
+		"reviewer": "QA Agent",
+		"date": "2026-07-11T12:20:00Z",
+		"target_platform": "paid social",
+		"intended_use": "public product ad",
+		"source_package": "delivery-package-v004"
+	},
+	"policy": {
+		"dispositions": {
+			"critical": "reject",
+			"major": "hold",
+			"minor": "ready",
+			"observation": "ready"
+		},
+		"waivable_severities": ["major"],
+		"non_waivable_areas": ["rights", "accessibility", "safety", "policy"]
+	},
+	"checks": [
+		{
+			"id": "claim-substantiation",
+			"status": "fail",
+			"evidence_type": "documented_fact",
+			"evidence_detail": "Product fact sheet does not approve disease-treatment claims."
+		}
+	],
+	"findings": [
+		{
+			"severity": "critical",
+			"area": "policy",
+			"issue": "Overlay makes an unsupported eczema treatment claim.",
+			"evidence_type": "documented_fact",
+			"evidence_detail": "Approved product facts allow dry-skin support only; the video says 'repairs eczema overnight'.",
+			"timecode": "00:06.000",
+			"recommended_fix": "Replace with approved copy and send revised ad through legal and QA review.",
+			"owner": "Legal review",
+			"retest_required": true
+		}
+	]
+}
+```
 
 ## Test matrix by deliverable
 

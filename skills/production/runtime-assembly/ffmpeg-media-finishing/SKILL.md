@@ -22,6 +22,117 @@ Every finishing handoff should include:
 - checksums and, when useful, frame hashes;
 - known risks such as re-encoded captions, color metadata ambiguity, clipping, lossy transcodes, or platform-specific uncertainty.
 
+## Bundled deterministic assistance
+
+This skill includes a deterministic Python 3.11+ standard-library helper at `scripts/media_probe.py`. Use it when you need a repeatable technical audit or a quick delivery-spec gate before or after finishing. It is assistance, not a replacement for perceptual review, color-managed approval, audio listening, caption/accessibility review, rights review, or platform/client signoff.
+
+Documented fact, verified 2026-07-11: ffprobe is designed to gather multimedia stream information and can print JSON with `-show_format`, `-show_streams`, and `-print_format json`; if an input cannot be opened or recognized it returns a positive exit code. The helper invokes ffprobe with a subprocess argv list, never through a shell, and never runs ffmpeg or mutates media.
+
+Invocation:
+
+```bash
+python skills/production/runtime-assembly/ffmpeg-media-finishing/scripts/media_probe.py input.mp4 --pretty
+python skills/production/runtime-assembly/ffmpeg-media-finishing/scripts/media_probe.py input.mp4 --expect expected.json --pretty
+```
+
+Options:
+
+- `media`: required media path to inspect; the file is opened only by ffprobe.
+- `--expect expected.json`: optional expectation spec. Exit code `0` means the audit ran and every expectation passed; exit code `1` means the audit ran but one or more expectations failed.
+- `--ffprobe PATH_OR_NAME`: override the ffprobe executable. Default is `ffprobe` on `PATH`.
+- `--timeout SECONDS`: ffprobe timeout. Default is `30`.
+- `--pretty`: emit two-space formatted JSON instead of compact JSON.
+
+Exit codes:
+
+```text
+0  audit completed and expectations passed, or no expectations were provided
+1  audit completed but at least one expectation failed
+2  usage or input-file error
+3  ffprobe executable unavailable
+4  ffprobe returned a non-zero exit code
+5  ffprobe timed out
+6  ffprobe output was not valid or usable JSON
+7  expectation JSON could not be read, parsed, or validated
+```
+
+Normalized audit schema, version `1.0`:
+
+```json
+{
+  "schema_version": "1.0",
+  "status": "pass",
+  "tool": "media_probe.py",
+  "ffprobe": {
+    "executable": "ffprobe",
+    "argv": ["ffprobe", "-v", "error", "-show_format", "-show_streams", "-print_format", "json", "input.mp4"]
+  },
+  "media": {
+    "path": "input.mp4",
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "format_long_name": "QuickTime / MOV",
+    "duration_seconds": 1.0,
+    "size_bytes": 12345,
+    "bit_rate": 98765
+  },
+  "streams": {
+    "counts": {"video": 1, "audio": 1, "subtitle": 0, "other": 0},
+    "video": {
+      "index": 0,
+      "codec_name": "h264",
+      "profile": "High",
+      "width": 1920,
+      "height": 1080,
+      "pix_fmt": "yuv420p",
+      "r_frame_rate": {"raw": "30/1", "value": 30.0},
+      "avg_frame_rate": {"raw": "30/1", "value": 30.0},
+      "duration_seconds": 1.0
+    },
+    "audio": {
+      "index": 1,
+      "codec_name": "aac",
+      "sample_rate": 48000,
+      "channels": 2,
+      "channel_layout": "stereo",
+      "sample_fmt": "fltp",
+      "duration_seconds": 1.0
+    }
+  },
+  "expectations": null
+}
+```
+
+If a video or audio stream is absent, its normalized value is `null` and the corresponding count is `0`. Unknown numeric values are emitted as `null` rather than invented.
+
+Expectation schema:
+
+```json
+{
+  "checks": [
+    {"field": "media.duration_seconds", "op": "tolerance", "value": {"value": 10.0, "tolerance": 0.05}},
+    {"field": "streams.video.codec_name", "op": "equals", "value": "h264"},
+    {"field": "streams.video.width", "op": "equals", "value": 1920},
+    {"field": "streams.video.height", "op": "equals", "value": 1080},
+    {"field": "streams.video.avg_frame_rate.value", "op": "tolerance", "value": {"value": 30.0, "tolerance": 0.01}},
+    {"field": "streams.video.pix_fmt", "op": "equals", "value": "yuv420p"},
+    {"field": "streams.audio.codec_name", "op": "equals", "value": "aac"},
+    {"field": "streams.audio.sample_rate", "op": "equals", "value": 48000},
+    {"field": "streams.audio.channels", "op": "equals", "value": 2}
+  ]
+}
+```
+
+Supported `op` values:
+
+- `equals`: exact JSON equality.
+- `in`: actual value must be one of the values in the expected array.
+- `range`: numeric actual value must be within `{"min": number, "max": number}`; either boundary may be omitted.
+- `tolerance`: numeric actual value must be within `value +/- tolerance`.
+
+Malformed expectation numeric values, non-finite numbers, and negative tolerance values are usage errors in the expectation file. The helper reports them as exit code `7` with structured error JSON instead of treating them as failed media checks.
+
+Fields are dotted paths into the normalized report. Supported expectation targets intentionally cover common finishing gates: duration tolerance, video codec, width, height, frame rate, pixel format, audio codec, sample rate, and channel count. The schema can also address any stable field shown above, but do not treat this helper as proof of perceptual quality, color correctness, loudness compliance, or rights status.
+
 ## 1. Preflight the toolchain and inputs
 
 Record the FFmpeg build and encoder/filter availability because behavior depends on the installed binary, compile flags, and external libraries.

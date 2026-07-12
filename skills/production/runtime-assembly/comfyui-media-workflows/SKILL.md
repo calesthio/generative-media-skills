@@ -46,6 +46,16 @@ ComfyUI workflows are JSON graphs. The frontend save format and API format are n
 - For programmatic execution, export from the frontend with **File -> Export Workflow (API)** or otherwise use a conversion method verified against the target runtime.
 - Before submitting an API workflow, validate that each `class_type` exists in the runtime's node registry and that each exposed input name matches the current node definition.
 
+When you need a static preflight of an API-format workflow, use the bundled Python 3.11+ stdlib helper before runtime validation:
+
+```bash
+python scripts/inspect_workflow.py workflow_api.json --approved-classes approved_classes.txt --unknown-class warning --pretty
+```
+
+The helper inspects only local JSON. It validates the API-format shape, node IDs, `class_type`, `inputs`, optional `_meta`, link inputs shaped as `[node_id, output_index]`, dangling links, nonnegative integer output indexes, graph cycles, and warnings for secret-like keys/values or absolute/private-looking path strings. It emits a stable normalized JSON inventory with node, edge, class, and finding counts. Exit codes are `0` for no validation errors, `2` for validation errors, and `3` for parse or operational failures. If you provide a newline-delimited approved class list, class types absent from that list can be reported as warnings, errors, or ignored with `--unknown-class`.
+
+This helper is not a substitute for ComfyUI runtime validation. It never executes the graph, submits to `/prompt`, installs missing custom nodes, loads models, verifies input names against `/object_info`, or proves that a workflow will fit VRAM or run on a target server.
+
 For local ComfyUI server execution, the core pattern is:
 
 1. Upload needed inputs through the runtime's upload route or place them in the expected input directory.

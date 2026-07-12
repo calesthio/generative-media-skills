@@ -14,10 +14,10 @@ Baseline volatile facts were verified 2026-07-10. Re-check official sources on t
 
 ## Package checks (unscored)
 
-- Require exactly `SKILL.md` and `EVAL.md`, strict UTF-8, valid frontmatter, balanced Markdown fences, and rubric weights totaling 100.
+- Require UTF-8 `SKILL.md` plus hidden UTF-8 `EVAL.md`, valid frontmatter, balanced Markdown fences, rubric weights totaling 100, and only optional top-level `scripts/`, `references/`, `assets/`, or `tests/` directories.
 - Extract every Python fence and parse it with `ast`. Run the TokenHub client in a temporary directory with network functions patched to fail; default dry-run must make no network call and create no file.
 - Run an adversarial mocked execution: a missing/mismatched approval digest must stop before network or state creation; a simulated submit timeout must leave a durable `UNKNOWN_AFTER_SUBMIT` claim; a second invocation must make zero additional submit calls.
-- Run the repository `quick_validate.py` with UTF-8 mode enabled on Windows. Never make a real provider call for these checks.
+- Validate the publishable package with `python tools/package_skill.py skills/providers/video-generation/tencent-hunyuanvideo <temporary-output> --list`; the listed files must exclude `EVAL.md` and `tests/`. Never make a real provider call for these checks, and never expose `EVAL.md` to the producing agent.
 
 ## Test scenarios
 
