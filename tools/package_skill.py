@@ -242,7 +242,11 @@ def _find_unknown_top_level_items(root: Path) -> list[str]:
     allowed = {"SKILL.md", "EVAL.md", *APPROVED_TOP_LEVEL_DIRS}
     unknown = []
     for item in root.iterdir():
-        if item.name in allowed or _is_excluded_name(item.name):
+        if item.name in allowed:
+            continue
+        if _is_secret_like_name(item.name):
+            raise ValidationError(f"secret-like top-level item is not allowed: {item.name}")
+        if _is_excluded_name(item.name):
             continue
         unknown.append(item.name)
     return sorted(unknown)

@@ -120,6 +120,13 @@ class PackageSkillTests(unittest.TestCase):
         with self.assertRaisesRegex(package_skill.ValidationError, "secret-like"):
             self.package_dir(skill)
 
+    def test_secret_like_top_level_items_fail_closed(self):
+        skill = self.make_skill()
+        (skill / "token.txt").write_text("secret\n", encoding="utf-8")
+
+        with self.assertRaisesRegex(package_skill.ValidationError, "secret-like top-level"):
+            self.package_dir(skill)
+
     @unittest.skipIf(not hasattr(Path, "symlink_to"), "symlinks are unavailable")
     def test_symlink_inside_publishable_dir_is_rejected(self):
         skill = self.make_skill()

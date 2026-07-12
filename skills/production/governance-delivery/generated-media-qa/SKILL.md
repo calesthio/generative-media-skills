@@ -200,7 +200,7 @@ The input JSON must include:
 - `asset_id`: stable asset or delivery ID.
 - `review`: object with `reviewer` and ISO-compatible `date`; include target platform, intended use, and source package when available.
 - `policy`: explicit disposition rules. Provide `dispositions` mapping each severity (`critical`, `major`, `minor`, `observation`) to `ready`, `hold`, or `reject`. Optional `waivable_severities` lists severities that a supplied waiver may mechanically unblock. Optional `non_waivable_areas` is extended by the script to always include `rights`, `accessibility`, `safety`, and `policy`.
-- `checks`: array of automated or manual checks with `id`, `status` (`pass`, `fail`, `not_applicable`, or `not_checked`), optional `evidence_type`, and evidence detail.
+- `checks`: array of automated or manual checks with `id`, `status` (`pass`, `fail`, `not_applicable`, or `not_checked`), required `evidence_type`, and evidence detail.
 - `findings`: array with `severity`, `area`, `issue`, `evidence_type`, `evidence_detail`, and a locator (`timecode`, `frame`, or `region`) whenever the evidence is an empirical observation or the issue is visual, audio, captions, accessibility, or safety related.
 
 Evidence type must remain one of `documented_fact`, `empirical_observation`, or `heuristic`. Do not collapse these lanes during normalization: a documented platform requirement, a measured artifact, and a professional judgment have different authority.
