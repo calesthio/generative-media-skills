@@ -1,6 +1,6 @@
 # Skill index
 
-This catalog lists the 140 integrated skill packages. Each leaf directory contains the required authoring pair:
+This catalog lists the 145 integrated skill packages. Each leaf directory contains the required authoring pair:
 
 - `SKILL.md`
 - `EVAL.md`
@@ -192,6 +192,7 @@ Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `
 
 ### Creative direction
 
+- `2d-character-rig-animation`
 - `character-design-continuity`
 - `cinematic-shot-direction`
 - `lighting-direction`
@@ -220,8 +221,12 @@ Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `
 ### Runtime assembly
 
 - `comfyui-media-workflows`
+- `d3-animated-data-visualization`
 - `ffmpeg-media-finishing`
+- `gsap-animation-composition`
 - `hyperframes-video-composition`
+- `lottie-animation-delivery`
 - `manim-explainer-animation`
 - `remotion-video-composition`
+- `threejs-scene-composition`
 - `virtual-production-icvfx`
