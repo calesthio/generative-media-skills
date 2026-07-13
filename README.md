@@ -4,7 +4,7 @@
 
 Generative Media Skills is an agent-native production system for creating, directing, validating, and delivering image, video, audio, voice, music, 3D, avatar, and interactive media. It combines researched operating knowledge with executable guardrails so agents can move from a creative brief to a usable deliverable with provider context, production craft, safety boundaries, and technical checks.
 
-**145 research-backed skills across 25 categories, with tested executable resources where deterministic checks are better than prose.**
+**151 research-backed skills across 25 categories, with tested executable resources where deterministic checks are better than prose.**
 
 Use it with **Claude Code**, **Codex**, **GitHub Copilot**, **Cursor**, **OpenClaw/Hermes-style agents**, or any runtime that can load Agent Skills. Connect it to [OpenMontage](https://github.com/calesthio/OpenMontage) when you want the same production intelligence inside an orchestrated media workflow.
 
@@ -52,7 +52,7 @@ The agent gets judgment where judgment matters and executable validation where p
 
 ## Full Catalog
 
-Browse all 145 packages in [SKILL_INDEX.md](SKILL_INDEX.md).
+Browse all 151 packages in [SKILL_INDEX.md](SKILL_INDEX.md).
 
 At a glance:
 
@@ -63,14 +63,14 @@ At a glance:
 | Providers | Avatar video | 5 |
 | Providers | Image generation | 18 |
 | Providers | Image understanding | 2 |
-| Providers | Lip sync | 1 |
+| Providers | Lip sync | 2 |
 | Providers | Motion capture | 2 |
 | Providers | Music generation | 5 |
 | Providers | Sound generation | 2 |
 | Providers | Source separation | 1 |
 | Providers | Speech and voice | 6 |
 | Providers | Speech to text | 3 |
-| Providers | Text to speech | 9 |
+| Providers | Text to speech | 11 |
 | Providers | Video enhancement | 1 |
 | Providers | Video generation | 19 |
 | Providers | Video understanding | 1 |
@@ -78,11 +78,11 @@ At a glance:
 | Providers | World models | 2 |
 | Production | 3D craft | 2 |
 | Production | Audio craft | 7 |
-| Production | Content formats | 22 |
+| Production | Content formats | 23 |
 | Production | Creative direction | 8 |
 | Production | Governance and delivery | 5 |
 | Production | Post-production | 6 |
-| Production | Runtime assembly | 10 |
+| Production | Runtime assembly | 12 |
 
 ## Repository Structure
 

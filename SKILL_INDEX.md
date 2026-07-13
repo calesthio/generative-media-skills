@@ -1,6 +1,6 @@
 # Skill index
 
-This catalog lists the 145 integrated skill packages. Each leaf directory contains the required authoring pair:
+This catalog lists the 151 integrated skill packages. Each leaf directory contains the required authoring pair:
 
 - `SKILL.md`
 - `EVAL.md`
@@ -55,6 +55,7 @@ Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `
 
 ### Lip sync
 
+- `kling-advanced-lip-sync`
 - `sync-labs-lipsync`
 
 ### Motion capture
@@ -97,6 +98,7 @@ Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `
 ### Text to speech
 
 - `amazon-polly`
+- `byteplus-seed-speech-tts`
 - `cartesia-sonic`
 - `elevenlabs-tts`
 - `fish-audio-tts`
@@ -105,6 +107,7 @@ Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `
 - `minimax-speech`
 - `qwen3-tts`
 - `resemble-chatterbox`
+- `volcengine-doubao-speech-tts`
 
 ### Video enhancement
 
@@ -186,6 +189,7 @@ Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `
 - `product-ad-production`
 - `real-estate-content-production`
 - `saas-product-demo-production`
+- `screen-demo-production`
 - `social-short-production`
 - `talking-head-podcast-recut`
 - `ugc-ad-production`
@@ -220,6 +224,7 @@ Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `
 
 ### Runtime assembly
 
+- `audio-reactive-video-composition`
 - `comfyui-media-workflows`
 - `d3-animated-data-visualization`
 - `ffmpeg-media-finishing`
@@ -227,6 +232,7 @@ Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `
 - `hyperframes-video-composition`
 - `lottie-animation-delivery`
 - `manim-explainer-animation`
+- `procedural-canvas-animation`
 - `remotion-video-composition`
 - `threejs-scene-composition`
 - `virtual-production-icvfx`
