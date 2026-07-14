@@ -133,6 +133,19 @@ Capture:
 - Sound: music tempo, edit sync, SFX accents, voice/music balance, silence.
 - Differences to require: new scene order, new visual metaphor, different set/props, distinct graphic system, distinct music/SFX, rewritten language.
 
+### Create an objective description before interpreting the reference
+
+When a reference will inform search metadata, training/evaluation data, provider prompts, or detailed production comparison, first describe what is visibly present without explaining why it works. Use `precise-video-description` for the full method and record coverage across Subject, Scene, Motion, Spatial, and Camera.
+
+Keep two artifacts separate:
+
+1. **Source description:** observable entities, actions, spatial relations, camera behavior, overlays, timing, and uncertainty.
+2. **Production interpretation:** inferred intent, transferable function, emotional effect, originality constraints, and proposed adaptation.
+
+Do not let brand names, mood adjectives, or assumptions about creative intent contaminate the observation layer. Across multiple references, normalize terminology against one approved glossary and flag contradictions such as dolly versus zoom, subject-left versus frame-left, or physical signage versus an overlay. Add `description_source`, `description_spec_version`, and `description_approval_status` to the reference ledger when descriptions become downstream assets.
+
+If a model-generated reference description will be relied on, route it through `video-description-oversight`. A fluent caption is not evidence that the reference was reviewed accurately or completely.
+
 ### Audio, music, voice, and performance references
 
 Capture:
@@ -418,6 +431,7 @@ Use these as factual anchors, but verify volatile platform/provider rules again 
 - TikTok AI-generated content label announcement, verified 2026-07-10: https://newsroom.tiktok.com/en-us/new-labels-for-disclosing-ai-generated-content
 - Meta approach to labeling AI-generated content and manipulated media, verified 2026-07-10: https://about.fb.com/news/2024/04/metas-approach-to-labeling-ai-generated-content-and-manipulated-media/
 - European Commission Code of Practice on Transparency of AI-Generated Content and EU AI Act Regulation (EU) 2024/1689, verified 2026-07-10: https://digital-strategy.ec.europa.eu/en/policies/code-practice-ai-generated-content and https://eur-lex.europa.eu/eli/reg/2024/1689/oj
+- Lin et al., “Building a Precise Video Language with Human-AI Oversight,” structured video description and critique-based oversight, checked 2026-07-14: https://arxiv.org/abs/2604.21718
 - NIST AI RMF Generative AI Profile, verified 2026-07-10: https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence
 - W3C WCAG 2.2 and WCAG 2.2 Understanding pages for contrast, captions, and audio description, verified 2026-07-10: https://www.w3.org/TR/WCAG22/
 - USPTO likelihood of confusion and similar trademark search guidance, verified 2026-07-10: https://www.uspto.gov/trademarks/search/likelihood-confusion and https://www.uspto.gov/trademarks/basics/why-search-similar-trademarks

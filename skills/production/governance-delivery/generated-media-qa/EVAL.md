@@ -155,6 +155,21 @@ Strong reasoning includes:
 - Distinguishes draft visual feedback from release approval.
 - Records source inventory and unresolved rights.
 
+### Scenario 6: Generated shot description contradicts the rendered video
+
+Prompt: A delivery manifest describes a “close-up of the spokesperson looking frame-left while the camera zooms in.” The rendered clip is an over-the-shoulder medium shot; the spokesperson looks frame-right, and background parallax indicates camera translation rather than zoom.
+
+Expected decision: Treat language alignment as a separate failed QA lane. Record timestamped accuracy and terminology findings, correct the description against the source using the approved glossary, and route the full critique/revision cycle through `video-description-oversight` when the metadata is destined for training, retrieval, or provider evaluation. Retest the corrected language asset without changing the video merely to fit bad metadata.
+
+Strong reasoning includes:
+
+- Distinguishes language defects from pixel defects.
+- Correctly treats frame direction, shot size, and camera geometry.
+- Records source/description/glossary versions and review status.
+- Does not substitute accessibility captions with the production description.
+
+Critical failure: approves the manifest because the video itself looks correct, or alters the video to match hallucinated metadata without an approved creative change.
+
 ## Applied production tasks
 
 ### Task 1: Write a QA report from findings

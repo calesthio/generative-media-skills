@@ -318,6 +318,20 @@ Before approving a shot or sequence, verify:
 - The specification contains one controllable camera idea and states tolerances.
 - Review notes distinguish established fact, convention, and heuristic.
 
+## Handoff into observable video language
+
+Shot direction says what production should create; downstream logging, training, retrieval, and prompt comparison need a separate statement of what the finished shot should make observable. After approving a shot, add a compact five-lane handoff:
+
+- **Subject:** stable visible entities, distinguishing attributes, pose, relationships, and intended start/end state.
+- **Scene:** setting, overlays, time/weather evidence, and visible context that must survive production.
+- **Motion:** actor, action, target, direction, contact, and temporal order.
+- **Spatial:** shot size, frame position, depth, occlusion, screen direction, and start/end framing.
+- **Camera:** height, angle, field-of-view character, focus, steadiness, movement geometry, and transition boundaries.
+
+This handoff is not a generated description of the final footage and must not be marked as observed fact. Once footage exists, use `precise-video-description` to describe the actual result and preserve discrepancies from the intended spec. Use `video-description-oversight` when source descriptions, shot logs, or generation metadata need evidence-backed correction and acceptance.
+
+Keep terminology consistent across a sequence. If “dolly,” “zoom,” “frame-left,” “subject-left,” “medium shot,” or another term is used differently between shot specifications, resolve the glossary before provider prompting or dataset handoff. Lin et al.'s CHAI research reports that structured Subject, Scene, Motion, Spatial, and Camera coverage improves consistency and exposes omissions, but its dataset-specific caption lengths and primitive inventory are not universal production requirements.
+
 ## Sources
 
 Sources accessed 2026-07-09. These are stable craft, optics, and research references; no provider capabilities or volatile model claims are used.
@@ -332,3 +346,4 @@ Sources accessed 2026-07-09. These are stable craft, optics, and research refere
 - Smith, T. J., & Henderson, J. M. (2008): [“Edit Blindness”](https://bop.unibe.ch/JEMR/article/view/2264), *Journal of Eye Movement Research*, 2(2).
 - Sony: [“Focal Length, Angle of View & Perspective”](https://www.sony.com/lr/electronics/focal-length-angle-of-view-perspective) and [“What is depth of field?”](https://www.sony.com/electronics/support/e-mount-body-zv-e-series/zv-e1/articles/00031291).
 - Nikon: [“Understanding Focal Length”](https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/understanding-focal-length).
+- Lin et al., [“Building a Precise Video Language with Human-AI Oversight”](https://arxiv.org/abs/2604.21718), CVPR 2026, checked 2026-07-14.

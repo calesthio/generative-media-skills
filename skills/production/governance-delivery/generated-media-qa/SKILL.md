@@ -45,6 +45,19 @@ Create a small matrix before deep inspection:
 
 Then inspect. Do not let a single attractive frame override a failed acceptance criterion.
 
+## Language-alignment QA lane
+
+When the delivery includes generated shot descriptions, search metadata, prompt reconstructions, source captions, or dataset annotations, review language separately from pixel/audio quality.
+
+- **Accuracy:** every described entity, action, spatial relation, camera behavior, overlay, and state change matches the source; no hallucination or unsupported intent.
+- **Completeness:** coverage matches the declared use. Archive search, VFX handoff, prompt comparison, and training data require different levels of detail.
+- **Terminology:** approved project vocabulary and reference frames are used consistently; distinguish subject-left from frame-left and dolly/translation from zoom/rotation.
+- **Temporal order:** events, cuts, focus changes, entries/exits, and start/end states appear in source order.
+- **Provenance:** description author/model/version, prompt, source asset/hash, specification/glossary version, reviewer, and acceptance status are recorded.
+- **Risk:** false product, safety, legal, identity, medical, financial, or public-interest descriptions are Critical when they affect release or downstream decisions.
+
+Accessibility captions, subtitles, and audio description have separate audience and standards requirements. Do not replace them with production descriptions. Use `precise-video-description` to define or repair the observation contract; use `video-description-oversight` for the complete pre-caption/critique/post-caption review workflow. This lane only ensures the final delivery's language assets align with the reviewed source and declared use.
+
 ## Technical file QA
 
 Use automated checks for measurable properties and human review for perceptual defects. Automated file QC catches many delivery failures, but it cannot decide whether a generated product label is semantically wrong or whether a synthetic spokesperson feels deceptive.
@@ -334,3 +347,4 @@ Pass condition: all factual/statistical claims trace to approved source material
 - SMPTE, [ST 2067 Interoperable Master Format](https://www.smpte.org/standards/st2067). Verified 2026-07-10.
 - Netflix Partner Help Center, [Best Practices: Technical QC and Checks for Branded IMP Delivery](https://partnerhelp.netflixstudios.com/hc/en-us/articles/6284290824211-Best-Practices-Technical-QC-and-Checks-for-Branded-IMP-Delivery), [Timed Text Style Guide: General Requirements](https://partnerhelp.netflixstudios.com/hc/en-us/articles/215758617-Timed-Text-Style-Guide-General-Requirements), and [Subtitle Timing Guidelines](https://partnerhelp.netflixstudios.com/hc/en-us/articles/360051554394-Timed-Text-Style-Guide-Subtitle-Timing-Guidelines). Platform-specific references verified 2026-07-10.
 - NIST, [AI RMF Generative AI Profile](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence) and [GenAI evaluation program](https://ai-challenges.nist.gov/genai). Verified 2026-07-10.
+- Lin et al., [“Building a Precise Video Language with Human-AI Oversight”](https://arxiv.org/abs/2604.21718), structured video-language and critique quality findings, checked 2026-07-14.

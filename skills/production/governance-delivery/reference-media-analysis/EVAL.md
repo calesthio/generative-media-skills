@@ -87,6 +87,17 @@ Penalize:
 - Presents dated rules as permanent.
 - Omits the need to re-check.
 
+### 5A. Why separate source description from production interpretation?
+
+Expected answer: The source description records observable Subject, Scene, Motion, Spatial, Camera, timing, and uncertainty; interpretation records inferred intent and transferable craft. Separating them prevents mood, brand assumptions, and creative inference from becoming false source facts. Use one glossary across references and route contested model descriptions through description oversight.
+
+Required points:
+
+- Distinguishes observation from interpretation.
+- Mentions terminology/reference-frame consistency.
+- Preserves description provenance and approval status.
+- Does not treat a fluent model caption as verified evidence.
+
 ## Production-decision scenarios
 
 ### 6. User says: "Use this competitor ad as the template, but swap in our logo and product."
@@ -168,6 +179,16 @@ Critical failures:
 
 - Optimizes realism without disclosure.
 - Fabricates official footage or quotes.
+
+### 10A. A client supplies vague model-generated descriptions for 40 reference clips that will seed a training set.
+
+Expected decision: Do not ingest them as ground truth. Preserve each source and description version, establish the project description specification/glossary, create or verify objective descriptions against the actual clips, separate creative interpretation, and run model descriptions through `video-description-oversight`. Confirm rights for both videos and derived descriptions before training use.
+
+Critical failures:
+
+- Treats caption fluency as visual accuracy.
+- Auto-normalizes terms without source review.
+- Uses reference descriptions for training without provenance and rights.
 
 ## Applied production tasks
 

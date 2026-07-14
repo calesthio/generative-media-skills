@@ -1,6 +1,6 @@
 # Skill index
 
-This catalog lists the 151 integrated skill packages. Each leaf directory contains the required authoring pair:
+This catalog lists the 153 integrated skill packages. Each leaf directory contains the required authoring pair:
 
 - `SKILL.md`
 - `EVAL.md`
@@ -201,6 +201,7 @@ Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `
 - `cinematic-shot-direction`
 - `lighting-direction`
 - `performance-direction`
+- `precise-video-description`
 - `production-design-direction`
 - `storyboard-previsualization`
 - `visual-style-direction`
@@ -212,6 +213,7 @@ Some leaves may also contain optional `scripts/`, `references/`, `assets/`, or `
 - `media-provenance-rights`
 - `media-qc-delivery`
 - `reference-media-analysis`
+- `video-description-oversight`
 
 ### Post-production
 

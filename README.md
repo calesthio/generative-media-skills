@@ -1,10 +1,9 @@
 # Generative Media Skills
 
-**Give your coding agent a media production department, not a folder of prompts.**
+**The whole media production suite for your AI Agent**
 
-Generative Media Skills is an agent-native production system for creating, directing, validating, and delivering image, video, audio, voice, music, 3D, avatar, and interactive media. It combines researched operating knowledge with executable guardrails so agents can move from a creative brief to a usable deliverable with provider context, production craft, safety boundaries, and technical checks.
+**150+ research-backed skills across 25 categories** for creating, directing, validating, and delivering image, video, audio, voice, music, 3D, avatar, and interactive media. It combines researched operating knowledge with executable guardrails so your AI agents can move from a creative brief to a usable deliverable with provider context, production craft, safety boundaries, and technical checks.
 
-**151 research-backed skills across 25 categories, with tested executable resources where deterministic checks are better than prose.**
 
 Use it with **Claude Code**, **Codex**, **GitHub Copilot**, **Cursor**, **OpenClaw/Hermes-style agents**, or any runtime that can load Agent Skills. Connect it to [OpenMontage](https://github.com/calesthio/OpenMontage) when you want the same production intelligence inside an orchestrated media workflow.
 
@@ -16,14 +15,8 @@ Point your agent at the repository and name the production surfaces it should lo
 
 ```text
 Use generative-media-skills.
-Load:
-- skills/providers/video-generation/seedance-2-0/SKILL.md
-- skills/production/creative-direction/cinematic-shot-direction/SKILL.md
-- skills/production/audio-craft/sound-design-foley/SKILL.md
-- skills/production/governance-delivery/media-qc-delivery/SKILL.md
-
-Create a 15-second premium product launch clip. Include the shot plan,
-generation prompts, sound direction, rights/provenance notes, and final QA pass.
+Load the necessary skills required for the below task.
+Create a 15-second premium product launch clip. Include the shot plan, generation prompts, sound direction, rights/provenance notes, and final QA pass.
 ```
 
 The agent gets researched judgment from the skills and can use bundled resources when the task benefits from deterministic execution.
@@ -52,7 +45,7 @@ The agent gets judgment where judgment matters and executable validation where p
 
 ## Full Catalog
 
-Browse all 151 packages in [SKILL_INDEX.md](SKILL_INDEX.md).
+Browse all 153 packages in [SKILL_INDEX.md](SKILL_INDEX.md).
 
 At a glance:
 
@@ -79,8 +72,8 @@ At a glance:
 | Production | 3D craft | 2 |
 | Production | Audio craft | 7 |
 | Production | Content formats | 23 |
-| Production | Creative direction | 8 |
-| Production | Governance and delivery | 5 |
+| Production | Creative direction | 9 |
+| Production | Governance and delivery | 6 |
 | Production | Post-production | 6 |
 | Production | Runtime assembly | 12 |
 

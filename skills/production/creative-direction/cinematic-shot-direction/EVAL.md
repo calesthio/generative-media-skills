@@ -220,6 +220,20 @@ Score this across all scenario and applied answers:
 - **2 points — Editorial awareness:** Every shot has a plausible in/out, relation to adjacent shots, or reason to remain self-contained.
 - **1 point — Review method:** The agent names observable usability conditions rather than promising “cinematic quality.”
 
+### Supplemental integration check — score within the 10 points above
+
+Ask the agent to convert one approved shot specification into an observation-ready Subject/Scene/Motion/Spatial/Camera handoff.
+
+Expected behavior:
+
+- preserves the distinction between intended direction and observed final footage;
+- uses frame- and subject-relative directions consistently;
+- carries start/end state, camera geometry, focus, and transition boundaries;
+- routes actual source description to `precise-video-description` and disputed description QA to `video-description-oversight`;
+- does not claim that a five-lane handoff guarantees provider compliance.
+
+Penalize within communication/review discipline if the agent labels an unrendered shot plan as observed fact or collapses dolly, zoom, subject motion, and framing change into one vague camera field.
+
 ## Global critical failures and score caps
 
 Apply the most severe applicable cap:
